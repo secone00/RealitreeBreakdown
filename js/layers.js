@@ -21,7 +21,14 @@ addLayer("r", {
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
-        return new Decimal(1)
+        exp = new Decimal(1)
+        if (hasUpgrade("r", 11)) {
+            exp = new Decimal(1.05)
+        }
+        if (hasUpgrade("r", 21)) {
+            exp = new Decimal(1.10)
+        }
+        return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
     hotkeys: [
@@ -31,13 +38,20 @@ addLayer("r", {
         rows: 5,
         cols: 5,
         11: {
-            description: "Begin Reality",
-            cost: new Decimal(2),
-            effect(){
-                let retVal = player.r.points.plus(5)
-                return retVal
-            },
+            title: "Begin Reality",
+            description: "Doubles base number gain, reality point gain, and raises realities gain ^1.05.",
+            cost: new Decimal(2)
         },
+        21: {
+            title: "Raise Realities",
+            description: "Raises realities gain by ^1.05",
+            cost: new Decimal(50)
+        },
+        31: {
+            title: "Alter Reality",
+            description: "Unlocks the Skill Tab",
+            cost: new Decimal(500)
+        }
     },
     layerShown(){return true}
 })
