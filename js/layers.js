@@ -1,20 +1,23 @@
-addLayer("p", {
-    name: "prestige", // This is optional, only used in a few places, If absent it just uses the layer id.
-    symbol: "P", // This appears on the layer's node. Default is the id with the first letter capitalized
+addLayer("r", {
+    name: "Reality", // This is optional, only used in a few places, If absent it just uses the layer id.
+    symbol: "R", // This appears on the layer's node. Default is the id with the first letter capitalized
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: new Decimal(0),
+		points: new Decimal(0)
     }},
-    color: "#4BDC13",
+    color: "#d41323",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
-    resource: "prestige points", // Name of prestige currency
-    baseResource: "points", // Name of resource prestige is based on
+    resource: "reality points", // Name of prestige currency
+    baseResource: "realities", // Name of resource prestige is based on
     baseAmount() {return player.points}, // Get the current amount of baseResource
     type: "normal", // normal: cost to gain currency depends on amount gained. static: cost depends on how much you already have
-    exponent: 0.5, // Prestige currency exponent
+    exponent: 0.25, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
+        if (hasUpgrade("r", 11)) {
+            mult = new Decimal(2)
+        }
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
@@ -24,5 +27,17 @@ addLayer("p", {
     hotkeys: [
         {key: "p", description: "P: Reset for prestige points", onPress(){if (canReset(this.layer)) doReset(this.layer)}},
     ],
+    upgrades:  {
+        rows: 5,
+        cols: 5,
+        11: {
+            description: "Begin Reality",
+            cost: new Decimal(2),
+            effect(){
+                let retVal = player.r.points.plus(5)
+                return retVal
+            },
+        },
+    },
     layerShown(){return true}
 })

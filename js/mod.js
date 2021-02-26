@@ -2,7 +2,7 @@ let modInfo = {
 	name: "Treeality Breakdown",
 	id: "mynameisseconedoyoulikeptmodsbecauseido",
 	author: "Secone",
-	pointsName: "Reality Points",
+	pointsName: "number",
 	discordName: "",
 	discordLink: "",
 	initialStartPoints: new Decimal (10), // Used for hard resets and new players
@@ -37,10 +37,11 @@ function canGenPoints(){
 
 // Calculate points/sec!
 function getPointGen() {
+	let gain = new Decimal(1)
 	if(!canGenPoints())
 		return new Decimal(0)
-
-	let gain = new Decimal(1)
+	if(hasUpgrade("r", 11))
+		gain = new Decimal(2)
 	return gain
 }
 
