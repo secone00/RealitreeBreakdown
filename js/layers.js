@@ -4,7 +4,9 @@ addLayer("r", {
     position: 0, // Horizontal position within a row. By default it uses the layer id and sorts in alphabetical order
     startData() { return {
         unlocked: true,
-		points: new Decimal(0)
+		points: new Decimal(0),
+        best: new Decimal(0),
+        total: new Decimal(0)
     }},
     color: "#d41323",
     requires: new Decimal(10), // Can be a function that takes requirement increases into account
@@ -15,19 +17,14 @@ addLayer("r", {
     exponent: 0.25, // Prestige currency exponent
     gainMult() { // Calculate the multiplier for main currency from bonuses
         mult = new Decimal(1)
-        if (hasUpgrade("r", 11)) {
+        if (hasUpgrade("r", 12)) {
             mult = new Decimal(2)
         }
         return mult
     },
     gainExp() { // Calculate the exponent on main currency from bonuses
         exp = new Decimal(1)
-        if (hasUpgrade("r", 11)) {
-            exp = new Decimal(1.05)
-        }
-        if (hasUpgrade("r", 21)) {
-            exp = new Decimal(1.10)
-        }
+
         return exp
     },
     row: 0, // Row the layer is in on the tree (0 is the first row)
@@ -39,19 +36,71 @@ addLayer("r", {
         cols: 5,
         11: {
             title: "Begin Reality",
-            description: "Doubles base number gain, reality point gain, and raises realities gain ^1.05.",
-            cost: new Decimal(2)
+            description: "Unlocks Skills tab and gain a Skill Point.",
+            cost: new Decimal(10)
         },
         21: {
             title: "Raise Realities",
-            description: "Raises realities gain by ^1.05",
-            cost: new Decimal(50)
+            description: "Gain another Skill Point, double point gain",
+            cost: new Decimal(1000)
         },
         31: {
             title: "Alter Reality",
-            description: "Unlocks the Skill Tab",
-            cost: new Decimal(500)
+            description: "Can choose a second path in the first skill tree split.",
+            cost: new Decimal(1e10)
+        },
+    buyables: {
+        rows: 1,
+        cols: 3,
+        11: {
+            title: "Reality Multiplier",
+            description: "Doubles point gain",
+            cost: new Decimal(1)
         }
     },
+    tabFormat: {
+        "Upgrades": {
+            content: ["main-display",
+                ["prestige-button"],
+                ["display-text",
+                function() {
+                    return "You have" + player.a.
+                }    
+            ]
+            ]
+        },
+        "Skills": {
+
+        },
+        "Buyables": {
+            
+        },
+        "Challenges" : {
+
+        }
+    }
+    },
     layerShown(){return true}
+})
+addLayer("sp", {
+    name: "Skills",
+    symbol: "SP",
+    position: 0,
+    startData() { return {
+        unlocked: false,
+        points: new Decimal(0),
+        best: new Decimal(0),
+        total: new Decimal(0)
+        }
+    },
+    type: "none",
+    upgrades: {
+        rows: 5,
+        cols: 5,
+        11: {
+            title: "uh",
+            description: "ye",
+            cost: new Decimal(1)
+        }
+    }
 })
